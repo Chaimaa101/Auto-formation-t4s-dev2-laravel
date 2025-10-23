@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\TestController;
+use App\Http\Controllers\PostController;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,9 +14,6 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::redirect('/','posts')->name('home');
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/test/{nom}', [TestController::class, 'index']);
+Route::resource('posts', PostController::class);
