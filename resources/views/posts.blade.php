@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Posts</title>
     @vite('resources/css/app.css')
 </head>
 <body class="flex flex-col min-h-screen bg-gray-50">
@@ -18,6 +18,7 @@
                 <p class="text-xs text-gray-500 mb-1">Posted {{ $post->created_at->diffForHumans()  }} By {{ $post->author }}</p>
                 <p class="text-xs text-gray-500 mb-3">Status: {{ $post->status }}</p>
                 <p class="text-sm text-gray-700">{{ $post->content }}</p>
+                <a href="{{ route('posts.show',$post) }}" class="bg-purple-500 text-white px-2 m-2 py-1 text-xs rounded-lg ">Show</a>
                 <a href="{{ route('posts.edit',$post) }}" class="bg-sky-500 text-white px-2 m-2 py-1 text-xs rounded-lg ">Update</a>
                 <form action="{{ route('posts.destroy', $post) }}" method="POST">
                     @csrf
