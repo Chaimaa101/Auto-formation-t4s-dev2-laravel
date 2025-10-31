@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 
 use App\Models\Post;
+use App\Models\Tag;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -13,8 +16,10 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::latest()->paginate(10);
-        return view('posts',['posts' => $posts ]);
+        // $posts = Post::latest()->paginate(10);
+        // return view('posts', ['posts' => $posts]);
+        $posts = Post::all();
+        return  $posts;
     }
 
     /**
@@ -37,9 +42,18 @@ class PostController extends Controller
             'status' => ['required'],
         ]);
 
-        Post::create($infos);
-        return redirect()->route('home');
-        
+        $post = $request->user()->posts()->create($infos);
+
+        $tag1 = Tag::create([
+            "tag_name" => $request->tag_name
+        ]);
+
+        $post->tags()->attach($tag1->id);
+
+        $post->comments()->create([
+            "content" => $request->cont
+        ]);
+        return $post;
     }
 
     /**
@@ -47,7 +61,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        return view('details',['post' =>$post]);
+        return view('details', ['post' => $post]);
     }
 
     /**
@@ -55,16 +69,15 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        return view('update',['post' =>$post]);
-       
+        return view('update', ['post' => $post]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update( Request $request, post $post)
+    public function update(Request $request, post $post)
     {
-          $infos = $request->validate([
+        $infos = $request->validate([
             'title' => ['required'],
             'content' => ['required'],
             'author' => ['required'],
@@ -80,7 +93,7 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-         $post->delete();
+        $post->delete();
         return back();
     }
 }

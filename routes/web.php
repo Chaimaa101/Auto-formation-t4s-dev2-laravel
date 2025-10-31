@@ -14,6 +14,6 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::redirect('/','posts')->name('home');
+// Route::redirect('/','posts')->name('home');
 
-Route::resource('posts', PostController::class);
+// Route::resource('posts', PostController::class);
